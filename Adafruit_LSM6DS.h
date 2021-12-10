@@ -151,15 +151,19 @@ public:
   bool getEvent(sensors_event_t *accel, sensors_event_t *gyro,
                 sensors_event_t *temp);
 
+  void clearGDAandXLDA(void); 
+
   lsm6ds_data_rate_t getAccelDataRate(void);
   void setAccelDataRate(lsm6ds_data_rate_t data_rate);
 
+  lsm6ds_accel_range_t currAccellRange;
   lsm6ds_accel_range_t getAccelRange(void);
   void setAccelRange(lsm6ds_accel_range_t new_range);
 
   lsm6ds_data_rate_t getGyroDataRate(void);
   void setGyroDataRate(lsm6ds_data_rate_t data_rate);
 
+  lsm6ds_gyro_range_t currGyroRange;
   lsm6ds_gyro_range_t getGyroRange(void);
   void setGyroRange(lsm6ds_gyro_range_t new_range);
 

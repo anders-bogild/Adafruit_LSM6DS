@@ -332,6 +332,7 @@ void Adafruit_LSM6DS::setAccelDataRate(lsm6ds_data_rate_t data_rate) {
 */
 lsm6ds_accel_range_t Adafruit_LSM6DS::getAccelRange(void) {
 
+  /*
   Adafruit_BusIO_Register ctrl1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LSM6DS_CTRL1_XL);
 
@@ -339,6 +340,9 @@ lsm6ds_accel_range_t Adafruit_LSM6DS::getAccelRange(void) {
       Adafruit_BusIO_RegisterBits(&ctrl1, 2, 2);
 
   return (lsm6ds_accel_range_t)accel_range.read();
+  */
+  return currAccellRange;
+  
 }
 /**************************************************************************/
 /*!
@@ -346,6 +350,8 @@ lsm6ds_accel_range_t Adafruit_LSM6DS::getAccelRange(void) {
     @param new_range The `lsm6ds_accel_range_t` range to set.
 */
 void Adafruit_LSM6DS::setAccelRange(lsm6ds_accel_range_t new_range) {
+
+  currAccellRange = new_range;
 
   Adafruit_BusIO_Register ctrl1 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LSM6DS_CTRL1_XL);
@@ -397,6 +403,7 @@ void Adafruit_LSM6DS::setGyroDataRate(lsm6ds_data_rate_t data_rate) {
 */
 lsm6ds_gyro_range_t Adafruit_LSM6DS::getGyroRange(void) {
 
+  /*
   Adafruit_BusIO_Register ctrl2 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LSM6DS_CTRL2_G);
 
@@ -404,6 +411,8 @@ lsm6ds_gyro_range_t Adafruit_LSM6DS::getGyroRange(void) {
       Adafruit_BusIO_RegisterBits(&ctrl2, 4, 0);
 
   return (lsm6ds_gyro_range_t)gyro_range.read();
+  */
+  return currGyroRange;
 }
 
 /**************************************************************************/
@@ -413,6 +422,8 @@ lsm6ds_gyro_range_t Adafruit_LSM6DS::getGyroRange(void) {
 */
 void Adafruit_LSM6DS::setGyroRange(lsm6ds_gyro_range_t new_range) {
 
+  currGyroRange = new_range;
+  
   Adafruit_BusIO_Register ctrl2 = Adafruit_BusIO_Register(
       i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LSM6DS_CTRL2_G);
 
@@ -440,6 +451,24 @@ void Adafruit_LSM6DS::highPassFilter(bool filter_enabled,
       Adafruit_BusIO_RegisterBits(&ctrl8, 2, 5);
   HPF_en.write(filter_enabled);
   HPF_filter.write(filter);
+}
+
+void Adafruit_LSM6DS::clearGDAandXLDA(void) {
+  // read accelerometer out high byte register to clear data ready bit and int.
+  /*
+  Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, LSM6DS_OUTX_L_G, 6);
+
+  uint8_t buffer[6];
+  data_reg.read(buffer, 6);
+  */
+  
+  Adafruit_BusIO_Register data_reg = Adafruit_BusIO_Register(
+      i2c_dev, spi_dev, ADDRBIT8_HIGH_TOREAD, 0x26, 4);
+
+  uint8_t buffer[4];
+  data_reg.read(buffer, 4);
+  
 }
 
 /******************* Adafruit_Sensor functions *****************/
